@@ -3,20 +3,18 @@ import PropTypes from 'prop-types';
 
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
-import MarvelService from '../../services/marvelService';
+import useMarvelService from '../../services/marvelService';
 
 import './charList.scss';
 
 const CharList = (props) => {
 
     const [charList, setCharList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [newItemLoading, setNewItemLoading] = useState(true);
     const [offset, setOffset] = useState(200);
     const [charEnded, setCharEnded] = useState(false);
-
-    const marvelService = new MarvelService();
+    
+    const {loading, error, getAllCharacters} = useMarvelService();
 
     useEffect(() => {
         window.addEventListener("scroll", onScroll);
@@ -39,14 +37,9 @@ const CharList = (props) => {
     };
 
     const onRequest = () => {
-        onCharListLoading();
-        marvelService.getAllCharacters(offset)
-        .then(onCharListLoaded)
-        .catch(onError)
-    }
-
-    const onCharListLoading = () => {
         setNewItemLoading(true);
+        getAllCharacters(offset)
+            .then(onCharListLoaded)
     }
     
     const onCharListLoaded = (newCharList) => {
@@ -56,16 +49,9 @@ const CharList = (props) => {
         }
 
         setCharList(charList => [...charList, ...newCharList]);
-        setLoading(loading => false);
-        setError(false);
         setNewItemLoading(false);
         setOffset(offset => offset + 9);
         setCharEnded(charEnded => ended);
-    }
-    
-    const onError = () => {
-        setError(true);
-        setLoading(loading => false);
     }
 
     const itemRefs = useRef([]);
@@ -116,18 +102,18 @@ const CharList = (props) => {
     
     const errorMessage = error ? <ErrorMessage/> : null;
     const loadingMessage = loading ? <Spinner/> : null;
-    const content  = !(loading || error) ? items : null;
+    const content  = !(error) ? items : null;
     
     return (
         <div className="char__list">
             {errorMessage}
-            {loadingMessage}
             {content}
+            {loadingMessage}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}
                 style={{'display' : charEnded ? 'none' : 'block'}}
-                onClick={() => onRequest(offset)}>
+                onClick={() => onRequest()}>
                 <div className="inner">load more</div>
             </button>
         </div>

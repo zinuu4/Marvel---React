@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from "framer-motion"
 import PropTypes from 'prop-types';
 
 import Spinner from '../spinner/Spinner'
@@ -31,6 +32,9 @@ const CharList = (props) => {
     }, [newItemLoading])
 
     const onScroll = () => {
+        if (newItemLoading) {
+            return;
+        }   
         if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 1) {
             setNewItemLoading(true);
         }
@@ -71,7 +75,7 @@ const CharList = (props) => {
             }
 
             return (
-                <li 
+                <motion.li 
                     className="char__item"
                     ref={el => itemRefs.current[i] = el}
                     tabIndex={0}
@@ -85,15 +89,28 @@ const CharList = (props) => {
                             props.onCharSelected(item.id);
                             focusOnItem(i);
                         }
-                    }}>
-                    <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
-                    <div className="char__name">{item.name}</div>
-                </li>
+                    }}
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1, transition: {delay: (i%9) * 0.25}}}>
+                    <motion.img 
+                        src={item.thumbnail} 
+                        alt={item.name} 
+                        style={imgStyle}
+                        initial={{opacity: 0}} 
+                        animate={{opacity: 1, transition: {delay: (i%8) * 0.3}}}/>
+                    <motion.div 
+                        className="char__name"
+                        initial={{opacity: 0}} 
+                        animate={{opacity: 1, transition: {delay: (i%8) * 0.3}}}>
+                    {item.name}</motion.div>
+                </motion.li>
             )
         });
         return (
             <ul className="char__grid">
+                <AnimatePresence>
                 {items}
+                </AnimatePresence>
             </ul>
         )
     }
@@ -109,10 +126,17 @@ const CharList = (props) => {
             {errorMessage}
             {content}
             {loadingMessage}
+            {/* filter: grayscale(1); opacity: 0.5; cursor: not-allowed; pointer-events: none; */}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}
-                style={{'display' : charEnded ? 'none' : 'block'}}
+                style={{
+                    'display': charEnded ? 'none' : 'block',
+                    'filter': newItemLoading ? 'grayscale(1)' : 'grayscale(0)',
+                    'opacity': newItemLoading ? 0.5 : 1,
+                    'cursor': newItemLoading ? 'not-allowed' : 'pointer',
+                    'pointerEvents': newItemLoading ? 'none' : 'all'
+                  }}
                 onClick={() => onRequest()}>
                 <div className="inner">load more</div>
             </button>

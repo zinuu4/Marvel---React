@@ -1,5 +1,6 @@
 import {lazy, Suspense} from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { AnimatePresence } from "framer-motion";
 
 import AppHeader from "../appHeader/AppHeader";
 import Spinner from '../spinner/Spinner';
@@ -18,6 +19,8 @@ const App = () => {
             <AppHeader/>
             <main>
                 <Suspense fallback={<Spinner/>}>
+                <AnimatePresence>
+
                     <Routes>
 
                         <Route path='/' element={<MainPage/>}/>
@@ -26,6 +29,8 @@ const App = () => {
                         <Route path="*" element={<Page404/>}/>
 
                     </Routes>
+
+                </AnimatePresence>
                 </Suspense>
             </main>
             </div>

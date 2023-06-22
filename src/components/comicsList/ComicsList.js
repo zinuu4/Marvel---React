@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from "framer-motion"
 
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
@@ -55,24 +56,28 @@ const ComicsList = () => {
         const items = arr.map((item, i) => {
 
             return (
-                <li 
+                <motion.li 
                     className="comics__item"
                     tabIndex={0}
-                    key={i}>
+                    key={i}
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1, transition: {delay: (i%8) * 0.25}}}>
                     <Link to={`/comics/${item.id}`}>
-                        <img 
+                        <motion.img 
                             src={item.thumbnail} 
                             alt={item.title} 
                             className="comics__item-img"/>
                         <div className="comics__item-name">{item.title}</div>
                         <div className="comics__item-price">{item.price}</div>
                     </Link>
-                </li>
+                </motion.li>
             )
         });
         return (
             <ul className="comics__grid">
-                {items}
+                <AnimatePresence>
+                    {items}
+                </AnimatePresence>
             </ul>
         )
     }
@@ -90,7 +95,13 @@ const ComicsList = () => {
             {loadingMessage}
             <button 
                 className="button button__main button__long"
-                style={{'display' : comicsEnded ? 'none' : 'block'}}
+                style={{
+                    'display': comicsEnded ? 'none' : 'block',
+                    'filter': loading ? 'grayscale(1)' : 'grayscale(0)',
+                    'opacity': loading ? 0.5 : 1,
+                    'cursor': loading ? 'not-allowed' : 'pointer',
+                    'pointerEvents': loading ? 'none' : 'all'
+                  }}
                 onClick={() => onRequest()}>
                 <div className="inner">load more</div>
             </button>

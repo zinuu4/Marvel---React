@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
-import useMarvelService from '../../services/marvelService';
-import AppBanner from "../appBanner/AppBanner";
-import motionParams from '../../services/motionParams';
+import Spinner from '../../spinner/Spinner';
+import ErrorMessage from '../../errorMessage/ErrorMessage';
+import useMarvelService from '../../../services/marvelService';
+import AppBanner from "../../appBanner/AppBanner";
+import motionParams from '../../../services/motionParams';
 
 import './singleComicPage.scss';
 

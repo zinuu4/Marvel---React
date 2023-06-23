@@ -32,9 +32,9 @@ const CharList = (props) => {
     }, [newItemLoading])
 
     const onScroll = () => {
-        if (newItemLoading) {
-            return;
-        }   
+        // if (newItemLoading) {
+        //     return;
+        // }   
         if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 1) {
             setNewItemLoading(true);
         }

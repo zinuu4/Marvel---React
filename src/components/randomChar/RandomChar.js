@@ -29,6 +29,7 @@ const RandomChar = () => {
         getCharacter(id)
             .then(onCharLoaded);
     }
+    
     const errorMessage = error ? <ErrorMessage/> : null;
     const loadingMessage = loading ? <Spinner/> : null;
     const content = !(loading || error) ? <View char={char}/> : null; // Если у нас сейчас нет загрузки или нет ошибки

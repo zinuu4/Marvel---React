@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet';
 
 import motionParams from '../../../services/motionParams';
 import useMarvelService from '../../../services/marvelService';
@@ -49,6 +50,13 @@ const View = ({char}) => {
 
     return (
         <div className="single-comic">
+            <Helmet>
+                <meta
+                    name="description"
+                    content={`${name} character information`}
+                />
+                <title>{name}</title>
+            </Helmet>
             <img src={thumbnail} alt={name} className="single-comic__char-img"/>
             <div className="single-comic__info">
                 <h2 className="single-comic__name">{name}</h2>

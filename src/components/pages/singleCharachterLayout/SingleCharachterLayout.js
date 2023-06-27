@@ -5,9 +5,8 @@ import { Helmet } from 'react-helmet';
 
 import motionParams from '../../../services/motionParams';
 import useMarvelService from '../../../services/marvelService';
-import Spinner from '../../spinner/Spinner';
+import setContent from '../../../utils/setContent';
 import AppBanner from "../../appBanner/AppBanner";
-import ErrorMessage from '../../errorMessage/ErrorMessage';
 
 import './SingleCharachterLayout.scss';
 
@@ -16,7 +15,7 @@ const SingleCharacterLayout = () => {
     const { charId } = useParams();
     const [char, setChar] = useState({});
 
-    const {loading, error, getCharacter} = useMarvelService();
+    const {getCharacter, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -24,29 +23,24 @@ const SingleCharacterLayout = () => {
 
     const updateChar = () => {
     getCharacter(charId)
-        .then(onCharLoaded);
+        .then(onCharLoaded)
+        .then(() => setProcess('confirmed'));
     }
 
     const onCharLoaded = (charData) => {
         setChar(charData);
     };
-
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const loadingMessage = loading ? <Spinner/> : null;
-    const content = !(loading || error || !char) ? <View char={char}/> : null;
     
     return (
         <motion.div {...motionParams}>
             <AppBanner/>
-            {errorMessage}
-            {loadingMessage}
-            {content}
+            {setContent(process, View, char)}
         </motion.div>
     )
 }
 
-const View = ({char}) => {
-    const {thumbnail, name, description} = char;
+const View = ({data}) => {
+    const {thumbnail, name, description} = data;
 
     return (
         <div className="single-comic">

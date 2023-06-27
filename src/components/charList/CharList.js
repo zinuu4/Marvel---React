@@ -126,7 +126,6 @@ const CharList = (props) => {
             {errorMessage}
             {content}
             {loadingMessage}
-            {/* filter: grayscale(1); opacity: 0.5; cursor: not-allowed; pointer-events: none; */}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}

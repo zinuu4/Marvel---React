@@ -92,17 +92,13 @@ const CharList = (props) => {
                     }}
                     initial={{opacity: 0}}
                     animate={{opacity: 1, transition: {delay: (i%9) * 0.25}}}>
-                    <motion.img 
+                    <img 
                         src={item.thumbnail} 
                         alt={item.name} 
-                        style={imgStyle}
-                        initial={{opacity: 0}} 
-                        animate={{opacity: 1, transition: {delay: (i%8) * 0.3}}}/>
-                    <motion.div 
-                        className="char__name"
-                        initial={{opacity: 0}} 
-                        animate={{opacity: 1, transition: {delay: (i%8) * 0.3}}}>
-                    {item.name}</motion.div>
+                        style={imgStyle}/>
+                    <div 
+                        className="char__name">
+                    {item.name}</div>
                 </motion.li>
             )
         });

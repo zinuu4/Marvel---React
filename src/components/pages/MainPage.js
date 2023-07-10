@@ -41,7 +41,7 @@ const MainPage = () => {
                   charId={selectedChar}/>
           </ErrorBoundary>
 
-        <div>
+        <div style={{'position': 'sticky', 'top': '10px'}}>
 
           <ErrorBoundary>
               <CharInfo charId={selectedChar}/>
